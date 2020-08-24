@@ -11,7 +11,7 @@
     "prestart": "npx knex migrate:latest",
     "server": "nodemon -r dotenv-safe/config index.js",
     "server:testing": "cross-env NODE_ENV=development nodemon -r dotenv-safe/config index.js",
-    "start": "node index.js",
+    "start": "node -r dotenv-safe/config index.js",
     "poststart": "",
     "heroku-postbuild": "npm run build",
     "coverage": "cross-env NODE_ENV=development jest --coverage --detectOpenHandles --forceExit || true"

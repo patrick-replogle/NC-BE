@@ -14,12 +14,6 @@ const status = async (_, __, context) => {
 };
 
 const getAllUsers = async (_, __, context) => {
-  const authenticated = await context.authenticated;
-  if (!authenticated.success)
-    throw new AuthenticationError(
-      `AUTHENTICATION FAILED ${authenticated.error}`
-    );
-
   const userList = await userModel.find();
   const allUserEvents = userList.map(async (user) => {
     const owned = await eventModel.findBy({ user_id: user.id });
@@ -42,12 +36,6 @@ const getAllUsers = async (_, __, context) => {
 };
 
 const getUserById = async (_, args, context) => {
-  const authenticated = await context.authenticated;
-  if (!authenticated.success)
-    throw new AuthenticationError(
-      `AUTHENTICATION FAILED ${authenticated.error}`
-    );
-
   const user = await userModel.findById(args.id);
   if (user) {
     // favorite events with users
@@ -83,12 +71,6 @@ const getUserById = async (_, args, context) => {
 };
 
 const getUserByEmail = async (_, args, context) => {
-  const authenticated = await context.authenticated;
-  if (!authenticated.success)
-    throw new AuthenticationError(
-      `AUTHENTICATION FAILED ${authenticated.error}`
-    );
-
   const user = await userModel.findBy({ email: args.input.email }).first();
   if (user) {
     // favorite events with users
@@ -122,12 +104,6 @@ const getUserByEmail = async (_, args, context) => {
 };
 
 const getAuthoredEvents = async (_, args, context) => {
-  const authenticated = await context.authenticated;
-  if (!authenticated.success)
-    throw new AuthenticationError(
-      `AUTHENTICATION FAILED ${authenticated.error}`
-    );
-
   const user = await userModel.findById(args.id);
   if (user) {
     const events = await eventModel.findBy({ user_id: args.id });
@@ -146,12 +122,6 @@ const getAuthoredEvents = async (_, args, context) => {
 };
 
 const getInvitedEvents = async (_, args, context) => {
-  const authenticated = await context.authenticated;
-  if (!authenticated.success)
-    throw new AuthenticationError(
-      `AUTHENTICATION FAILED ${authenticated.error}`
-    );
-
   const user = await userModel.findById(args.id);
   if (user) {
     const events = await eventModel.findInvitedEvents(args.id);
@@ -170,12 +140,6 @@ const getInvitedEvents = async (_, args, context) => {
 };
 
 const getAttendingEvents = async (_, args, context) => {
-  const authenticated = await context.authenticated;
-  if (!authenticated.success)
-    throw new AuthenticationError(
-      `AUTHENTICATION FAILED ${authenticated.error}`
-    );
-
   const user = await userModel.findById(args.id);
   if (user) {
     const events = await eventModel.findAttendingEvents(args.id);
@@ -194,12 +158,6 @@ const getAttendingEvents = async (_, args, context) => {
 };
 
 const addUser = async (_, args, context) => {
-  const authenticated = await context.authenticated;
-  if (!authenticated.success)
-    throw new AuthenticationError(
-      `AUTHENTICATION FAILED ${authenticated.error}`
-    );
-
   const existing = await userModel.findBy({ email: args.input.email }).first();
   if (existing) {
     throw new Error("email already taken");
@@ -209,12 +167,6 @@ const addUser = async (_, args, context) => {
 };
 
 const updateUser = async (_, args, context) => {
-  const authenticated = await context.authenticated;
-  if (!authenticated.success)
-    throw new AuthenticationError(
-      `AUTHENTICATION FAILED ${authenticated.error}`
-    );
-
   const found = await userModel.findById(args.id);
   if (found) {
     return await userModel.update(args.id, args.input);
@@ -224,12 +176,6 @@ const updateUser = async (_, args, context) => {
 };
 
 const removeUser = async (_, args, context) => {
-  const authenticated = await context.authenticated;
-  if (!authenticated.success)
-    throw new AuthenticationError(
-      `AUTHENTICATION FAILED ${authenticated.error}`
-    );
-
   const user = await userModel.findById(args.id);
   if (!user) {
     throw new Error("The specified user id does not exist");
@@ -240,12 +186,6 @@ const removeUser = async (_, args, context) => {
 };
 
 const addFavoriteEvent = async (_, args, context) => {
-  const authenticated = await context.authenticated;
-  if (!authenticated.success)
-    throw new AuthenticationError(
-      `AUTHENTICATION FAILED ${authenticated.error}`
-    );
-
   const user = await userModel.findById(args.input.user_id);
   const event = await eventModel.findById(args.input.event_id);
   const duplicate = await userModel.findIfAlreadyFavorite(args.input);
@@ -271,12 +211,6 @@ const addFavoriteEvent = async (_, args, context) => {
 };
 
 const removeFavoriteEvent = async (_, args, context) => {
-  const authenticated = await context.authenticated;
-  if (!authenticated.success)
-    throw new AuthenticationError(
-      `AUTHENTICATION FAILED ${authenticated.error}`
-    );
-
   const isFavorite = await userModel.findIfAlreadyFavorite(args.input);
   if (isFavorite) {
     // remove event and return full array of favorite events with users
@@ -300,12 +234,6 @@ const removeFavoriteEvent = async (_, args, context) => {
 };
 
 const getFavoriteEvents = async (_, args, context) => {
-  const authenticated = await context.authenticated;
-  if (!authenticated.success)
-    throw new AuthenticationError(
-      `AUTHENTICATION FAILED ${authenticated.error}`
-    );
-
   const user = await userModel.findById(args.id);
   if (user) {
     const favoriteEvents = await userModel.findAllFavoriteEvents(args.id);

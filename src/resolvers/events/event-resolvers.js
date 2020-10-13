@@ -2,12 +2,6 @@ const eventModel = require("../../models/events/event-models.js");
 const userModel = require("../../models/users/user-models.js");
 
 const getAllEvents = async (_, __, context) => {
-  const authenticated = await context.authenticated;
-  if (!authenticated.success)
-    throw new AuthenticationError(
-      `AUTHENTICATION FAILED ${authenticated.error}`
-    );
-
   const eventList = await eventModel.find();
   const userList = eventList.map(async (event) => {
     const users = await eventModel.findUsersForEvent(event.id);
@@ -23,12 +17,6 @@ const getAllEvents = async (_, __, context) => {
 };
 
 const getEventById = async (_, args, context) => {
-  const authenticated = await context.authenticated;
-  if (!authenticated.success)
-    throw new AuthenticationError(
-      `AUTHENTICATION FAILED ${authenticated.error}`
-    );
-
   const event = await eventModel.findById(args.id);
   if (event) {
     const users = await eventModel.findUsersForEvent(args.id);
@@ -44,12 +32,6 @@ const getEventById = async (_, args, context) => {
 };
 
 const addEvent = async (_, args, context) => {
-  const authenticated = await context.authenticated;
-  if (!authenticated.success)
-    throw new AuthenticationError(
-      `AUTHENTICATION FAILED ${authenticated.error}`
-    );
-
   const newEvent = await eventModel.add(args.input);
   const invite = {
     event_id: newEvent.id,
@@ -67,12 +49,6 @@ const addEvent = async (_, args, context) => {
 };
 
 const updateEvent = async (_, args, context) => {
-  const authenticated = await context.authenticated;
-  if (!authenticated.success)
-    throw new AuthenticationError(
-      `AUTHENTICATION FAILED ${authenticated.error}`
-    );
-
   const event = await eventModel.findById(args.id);
   if (event) {
     const updatedEvent = await eventModel.update(args.id, args.input);
@@ -89,12 +65,6 @@ const updateEvent = async (_, args, context) => {
 };
 
 const removeEvent = async (_, args, context) => {
-  const authenticated = await context.authenticated;
-  if (!authenticated.success)
-    throw new AuthenticationError(
-      `AUTHENTICATION FAILED ${authenticated.error}`
-    );
-
   const event = await eventModel.findById(args.id);
   if (event) {
     await eventModel.remove(args.id);
@@ -128,12 +98,6 @@ const inviteUserToEvent = async (_, args) => {
 };
 
 const updateInvitation = async (_, args, context) => {
-  const authenticated = await context.authenticated;
-  if (!authenticated.success)
-    throw new AuthenticationError(
-      `AUTHENTICATION FAILED ${authenticated.error}`
-    );
-
   isStatusValid(args.input.status);
   const invited = await eventModel.findIfUserIsAlreadyInvited(args.input);
   if (invited) {
@@ -153,12 +117,6 @@ const updateInvitation = async (_, args, context) => {
 };
 
 const removeInvitation = async (_, args, context) => {
-  const authenticated = await context.authenticated;
-  if (!authenticated.success)
-    throw new AuthenticationError(
-      `AUTHENTICATION FAILED ${authenticated.error}`
-    );
-
   const isInvited = await eventModel.findIfUserIsAlreadyInvited(args.input);
   if (isInvited) {
     await eventModel.removeInvite(args.input);
@@ -178,12 +136,6 @@ const removeInvitation = async (_, args, context) => {
 };
 
 const getUninvitedUsers = async (_, args, context) => {
-  const authenticated = await context.authenticated;
-  if (!authenticated.success)
-    throw new AuthenticationError(
-      `AUTHENTICATION FAILED ${authenticated.error}`
-    );
-
   const userList = await eventModel.findUninvitedUsersForEvent(args.id);
   return userList.map((user) => stringifyPhoto(user));
 };

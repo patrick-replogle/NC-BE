@@ -15,6 +15,14 @@ const app = express();
 app.use(cors());
 app.use(express.json({ limit: "15mb" }));
 
+app.use(function (req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    next();
+});
+
 app.use("/auth", authRouter);
 
 const path = "/graphql";

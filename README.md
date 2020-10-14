@@ -1,6 +1,6 @@
 # Neighborhood Chef
 
-The back-end is deployed on Heroku at [https://neighborhood-chef-be.herokuapp.com/](https://neighborhood-chef-be.herokuapp.com/)
+The back-end is deployed on Heroku at [https://neighborhood-chef-backend.herokuapp.com](https://neighborhood-chef-backend.herokuapp.com)
 
 ![build](https://github.com/Lambda-School-Labs/neighborhood-chef-be/workflows/build/badge.svg)
 [![Maintainability](https://api.codeclimate.com/v1/badges/e704a7d41bbcb50a6783/maintainability)](https://codeclimate.com/github/Lambda-School-Labs/neighborhood-chef-be/maintainability)
